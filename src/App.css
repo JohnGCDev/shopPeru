@@ -1,3 +1,39 @@
-#seprator-navbar{
+
+.separator{
     margin-top: 60px;
+}
+
+.navbar-green{
+    background-color: #43a82c;
+}
+
+.text-green{
+    color: #43a82c;
+}
+
+.white-opacity{
+    background-color: rgba(230, 229, 229, 0.80);
+    padding: 1px;
+}
+
+.white-text{
+    color: white !important;
+}
+
+.bg-grey{
+    background-color: grey;
+}
+
+.rounded-buttons-lg{
+    border-radius: 36px;
+    background-color: #43a82c;
+    font-size: x-large;
+}
+
+#home-image-bg{
+    padding-top: 10%;
+    background-image: url('/assets/img/christina-unsplash.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
