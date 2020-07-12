@@ -9,9 +9,11 @@ class Main extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {isLogged: false};
+    this.state = {isLogged: false, preData: null};
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+
+
   }
 
   handleLogout(){
@@ -22,13 +24,35 @@ class Main extends React.Component {
     this.setState({isLogged: true});
   }
 
-  render(){
+  componentDidMount(){
+    fetch('https://api.npoint.io/4517dfa359329751c000/descriptions')
+      .then(response => {
+          if(response.ok){
+            return response;
+          }else{
+            throw new Error('Error '+response.status + ': ' + response.statusText);
+          }
+        },
+        error => {
+          throw new Error(error.message);
+        }
+      )
+      .then(response => response.json())
+      .then(data => this.setState({preData: data}))
+      .catch(error => console.log(error.message));
+  }
 
+  render(){
+    const renderData = (this.state.preData !== null)?
+      this.state.preData['forBuyers'].map(item => 
+      <div key={item['title']}><h4>{item['title']}</h4><p>{item['description']}</p><img alt="imgs" src={item['img']}/></div>)
+      :<p>{'null'}</p>;
     const WantToSell = (props) => {
       return(
         <div>
           <h1>I Want to Sell</h1>
           <p>lorem ipsu dolor bla bla</p>
+          <div>{renderData}</div>
         </div>
       );
     }
