@@ -1,19 +1,28 @@
 import React from 'react';
 import '../App.css';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
-import {Switch, Route, Redirect} from 'react-router-dom';
+import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {fetchAllDescForBuyers} from '../redux/actions/ActionCreators';
 import Header from './HeaderComp';
 import Home from './HomeComp';
+
+const mapStateToProps = state => ({
+  descForBuyers: state.descForBuyers,
+  descForOwners: state.descForOwners
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchAllDescForBuyers: () => dispatch(fetchAllDescForBuyers())
+});
 
 class Main extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {isLogged: false, preData: null};
+    this.state = {isLogged: false};
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-
-
   }
 
   handleLogout(){
@@ -25,34 +34,16 @@ class Main extends React.Component {
   }
 
   componentDidMount(){
-    fetch('https://api.npoint.io/4517dfa359329751c000/descriptions')
-      .then(response => {
-          if(response.ok){
-            return response;
-          }else{
-            throw new Error('Error '+response.status + ': ' + response.statusText);
-          }
-        },
-        error => {
-          throw new Error(error.message);
-        }
-      )
-      .then(response => response.json())
-      .then(data => this.setState({preData: data}))
-      .catch(error => console.log(error.message));
+    this.props.fetchAllDescForBuyers();
   }
 
   render(){
-    const renderData = (this.state.preData !== null)?
-      this.state.preData['forBuyers'].map(item => 
-      <div key={item['title']}><h4>{item['title']}</h4><p>{item['description']}</p><img alt="imgs" src={item['img']}/></div>)
-      :<p>{'null'}</p>;
+    
     const WantToSell = (props) => {
       return(
         <div>
           <h1>I Want to Sell</h1>
           <p>lorem ipsu dolor bla bla</p>
-          <div>{renderData}</div>
         </div>
       );
     }
@@ -71,12 +62,18 @@ class Main extends React.Component {
         <Header isLogged={this.state.isLogged} handleLogin={this.handleLogin} handleLogout={this.handleLogout}/>
       )
     }; 
+
+    const HomePage = () => {
+      return(
+        <Home descForBuyersData={this.props.descForBuyers} />
+      )
+    }
   
     return (
       <React.Fragment>
         <NavbarSection/>
         <Switch>
-          <Route path="/home" component={Home}/>
+          <Route path="/home" component={HomePage}/>
           <Route path="/wanttosell" component={WantToSell}/>
           <Route path="/wanttobuy" component={WantToBuy}/>
           <Redirect to="/home"/>
@@ -86,4 +83,4 @@ class Main extends React.Component {
   }
 }
 
-export default Main;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
