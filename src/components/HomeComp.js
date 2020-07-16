@@ -6,33 +6,59 @@ import Button from 'react-bootstrap/Button';
 import {Loading} from './LoadingComp';
 
 
-const RenderForBuyersData = (props) => {
+const RenderARow = (props) => {
+    const nColumns = 3;
+    const length = props.array.length;
+    let index = props.index;
+    //const ActualnColumns = (index+3 > length)? length-index : nColumns; 
+    //const offset = (index+3 > length)? 1 : 0; 
+    let rowToRender = [];
+    for(let j = 0; j < nColumns; j++){
+        if(index === length) break;
+        rowToRender.push(
+            <div className="text-center mx-3" key={props.array[index].id.toString()}>
+                <img className="img-fluid rounded-circle img-wh" src={props.array[index].img} 
+                    alt={props.array[index].title}/>
+                <hr/>
+                <h5>{props.array[index].title}</h5>
+            </div>
+        );
+        index++;
+    }
+    return rowToRender;
+}
+
+
+const RenderData = (props) => {
     
-    if(props.data.isLoading){
+    if(props.isLoading){
         return <Loading/>;
     }
 
-    if(props.data.errmess){
-        return <Col md={12}><h3 className="text-danger text-center">{props.data.errmess}</h3></Col>
+    if(props.errmess){
+        return <Row><Col md={12}><h3 className="text-danger text-center">{props.errmess}</h3></Col></Row>;
     }
 
-    return props.data.descForBuyers.map(item => {
-            return (
-                <Col md={12} key={item.title}>
-                    <h3>{item.title}</h3>
-                    <img src={item.img} alt={'img: '+ item.title}/>
-                    <p className="text-justify">{item.description}</p>
-                </Col>
+    if(props.data){
+        let length = props.data.length;
+        let Rows = [];
+        for(let i=0; i<length; i+=3){
+            if(i >= length) break;
+            Rows.push(
+                <div key={i.toString()} className="d-flex flex-md-row flex-column justify-content-around">
+                    <RenderARow array={props.data} index={i}/>
+                </div>
             );
         }
-    );
+        return Rows;
+    }
 }
 
 
 function Home(props){
 
     return(
-        <React.Fragment>
+     <React.Fragment>
             <Container fluid id="home-image-bg">
                 <Row>
                     <Col xs={12} md={{offset: 7, span: 5}}>
@@ -60,9 +86,32 @@ function Home(props){
                 </div>
             </Container>
             <Container>
+                <h2>IF YOU HAVE A SHOP</h2>
+                <hr/>
+                <RenderData isLoading={props.descForOwnersData.isLoading} errmess={props.descForOwnersData.errmess} data={props.descForOwnersData.descForOwners}/>
+                <div className="d-flex justify-content-center my-5">                    
+                    <Button variant="success" className="rounded-buttons-md">GET STARTED NOW</Button>
+                </div>
+                <br/><br/>
+                <h2>IF YOU WANT TO BUY PRODUCTS</h2>
+                <hr/>
+                <RenderData isLoading={props.descForBuyersData.isLoading} errmess={props.descForBuyersData.errmess} data={props.descForBuyersData.descForBuyers}/>
+                <div className="d-flex justify-content-center my-5">                    
+                    <Button variant="success" className="rounded-buttons-md">GET STARTED NOW</Button>
+                </div>
+                <br/><br/>
+            </Container>
+            <Container fluid className="pesudo-footer">
                 <Row>
-                    <RenderForBuyersData data={props.descForBuyersData}/>
+                    <Col md={12} className="text-center">
+                        <h3>IT DOESN'T MATTER IF YOU WANT TO BUY OR SELL</h3>
+                        <hr/>
+                        <h1>THERE IS NO COST!</h1>
+                    </Col>
                 </Row>
+                <div className="d-flex justify-content-center mt-2">
+                    <h4 className="bg-grey white-text">#IStayAtHome</h4>
+                </div>
             </Container>
         </React.Fragment>
     );

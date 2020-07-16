@@ -3,8 +3,9 @@ import '../App.css';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {fetchAllDescForBuyers} from '../redux/actions/ActionCreators';
+import {fetchAllDescForBuyers, fetchAllDescForOwners} from '../redux/actions/ActionCreators';
 import Header from './HeaderComp';
+import Footer from './FooterComp';
 import Home from './HomeComp';
 
 const mapStateToProps = state => ({
@@ -13,7 +14,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchAllDescForBuyers: () => dispatch(fetchAllDescForBuyers())
+  fetchAllDescForBuyers: () => dispatch(fetchAllDescForBuyers()),
+  fetchAllDescForOwners: () => dispatch(fetchAllDescForOwners())
 });
 
 class Main extends React.Component {
@@ -35,6 +37,7 @@ class Main extends React.Component {
 
   componentDidMount(){
     this.props.fetchAllDescForBuyers();
+    this.props.fetchAllDescForOwners();
   }
 
   render(){
@@ -65,7 +68,7 @@ class Main extends React.Component {
 
     const HomePage = () => {
       return(
-        <Home descForBuyersData={this.props.descForBuyers} />
+        <Home descForBuyersData={this.props.descForBuyers} descForOwnersData={this.props.descForOwners}/>
       )
     }
   
@@ -78,6 +81,7 @@ class Main extends React.Component {
           <Route path="/wanttobuy" component={WantToBuy}/>
           <Redirect to="/home"/>
         </Switch>
+        <Footer/>
       </React.Fragment>
     );
   }

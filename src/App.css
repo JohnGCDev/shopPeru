@@ -30,10 +30,40 @@
     font-size: x-large;
 }
 
+.rounded-buttons-md{
+    border-radius: 12px;
+    background-color: #43a82c;
+    font-size: x-large;
+}
+
 #home-image-bg{
     padding-top: 10%;
     background-image: url('/assets/img/christina-unsplash.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.img-wh{
+    width: 140px;
+    height: 160px;
+}
+
+.pesudo-footer{
+    background-color: #78da5c;
+}
+
+.footer{
+    padding-top: 35px;
+    padding-bottom: 15px;
+    background-color: #007800;
+    color: whitesmoke;
+}
+
+.links-white:link, .links-white:visited{
+    color: whitesmoke;
+}
+
+.links-white:active, .links-white:hover{
+    color: thistle;
 }
