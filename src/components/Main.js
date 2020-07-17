@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
+import '../../node_modules/bootstrap-social/bootstrap-social.css';
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {fetchAllDescForBuyers, fetchAllDescForOwners} from '../redux/actions/ActionCreators';

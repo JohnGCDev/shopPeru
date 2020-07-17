@@ -19,10 +19,14 @@ const Footer = (props) => {
                     </Col>
                     <Col md={6}>
                         <h4>Media:</h4>
+                        <a className="btn btn-social-icon btn-facebook btn-lg m-3" href="http://www.facebook.com/"><i className="fa fa-facebook"></i></a>
+                        <a className="btn btn-social-icon btn-google btn-lg m-3" href="http://youtube.com/"><i className="fa fa-youtube"></i></a>
+                        <a className="btn btn-social-icon btn-twitter btn-lg m-3" href="http://twitter.com/"><i className="fa fa-twitter"></i></a>
+                        <a className="btn btn-social-icon btn-info btn-lg m-3" href="mailto:"><i className="fa fa-envelope-o"></i></a>
                     </Col>
                 </Row>
-                <div className="d-flex justify-content-center mt-4">
-                    <div><h4><span style={{"fontSize": "38px"}}>©</span> Copyright 2020 ShopPeru</h4></div>
+                <div className="d-flex justify-content-center mt-2">
+                    <div className="text-center"><h4><span style={{"fontSize": "38px"}}>©</span> Copyright 2020 ShopPeru</h4></div>
                 </div>
             </Container>    
         </footer>

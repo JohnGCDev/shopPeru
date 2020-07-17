@@ -3,6 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
+import {Link} from 'react-router-dom';
 import {Loading} from './LoadingComp';
 
 
@@ -19,7 +20,7 @@ const RenderARow = (props) => {
             <div className="text-center mx-3" key={props.array[index].id.toString()}>
                 <img className="img-fluid rounded-circle img-wh" src={props.array[index].img} 
                     alt={props.array[index].title}/>
-                <hr/>
+                <hr className="items-line"/>
                 <h5>{props.array[index].title}</h5>
             </div>
         );
@@ -86,18 +87,22 @@ function Home(props){
                 </div>
             </Container>
             <Container>
-                <h2>IF YOU HAVE A SHOP</h2>
-                <hr/>
+                <h2 className="mt-5">IF YOU HAVE A SHOP</h2>
+                <hr className="title-line"/>
                 <RenderData isLoading={props.descForOwnersData.isLoading} errmess={props.descForOwnersData.errmess} data={props.descForOwnersData.descForOwners}/>
                 <div className="d-flex justify-content-center my-5">                    
-                    <Button variant="success" className="rounded-buttons-md">GET STARTED NOW</Button>
+                    <Link to="/wanttosell">
+                        <Button variant="success" className="rounded-buttons-md">GET STARTED NOW</Button>
+                    </Link>
                 </div>
                 <br/><br/>
                 <h2>IF YOU WANT TO BUY PRODUCTS</h2>
-                <hr/>
+                <hr className="title-line"/>
                 <RenderData isLoading={props.descForBuyersData.isLoading} errmess={props.descForBuyersData.errmess} data={props.descForBuyersData.descForBuyers}/>
                 <div className="d-flex justify-content-center my-5">                    
-                    <Button variant="success" className="rounded-buttons-md">GET STARTED NOW</Button>
+                    <Link to="/wanttobuy">
+                        <Button variant="success" className="rounded-buttons-md">GET STARTED NOW</Button>
+                    </Link>
                 </div>
                 <br/><br/>
             </Container>
@@ -105,8 +110,8 @@ function Home(props){
                 <Row>
                     <Col md={12} className="text-center">
                         <h3>IT DOESN'T MATTER IF YOU WANT TO BUY OR SELL</h3>
-                        <hr/>
-                        <h1>THERE IS NO COST!</h1>
+                        <hr className="title-line"/>
+                        <h1 className="grenze-font">There is NO cost!</h1>
                     </Col>
                 </Row>
                 <div className="d-flex justify-content-center mt-2">

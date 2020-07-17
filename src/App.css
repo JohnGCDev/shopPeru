@@ -49,12 +49,22 @@
     height: 160px;
 }
 
+.title-line{
+    border: 3px solid #007800;
+    border-radius: 5px;
+}
+
+.items-line{
+    border: 1px solid #43a82c;
+    border-radius: 5px;
+}
+
 .pesudo-footer{
     background-color: #78da5c;
 }
 
 .footer{
-    padding-top: 35px;
+    padding-top: 20px;
     padding-bottom: 15px;
     background-color: #007800;
     color: whitesmoke;
@@ -66,4 +76,8 @@
 
 .links-white:active, .links-white:hover{
     color: thistle;
+}
+
+.grenze-font{
+    font-family: 'Grenze Gotisch', cursive;
 }
