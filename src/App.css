@@ -45,8 +45,9 @@
 }
 
 .img-wh{
-    width: 140px;
-    height: 160px;
+    width: 160px;
+    height: 180px;
+    border: 1px solid #007800;
 }
 
 .title-line{
@@ -59,7 +60,7 @@
     border-radius: 5px;
 }
 
-.pesudo-footer{
+.pre-footer{
     background-color: #78da5c;
 }
 
@@ -80,4 +81,22 @@
 
 .grenze-font{
     font-family: 'Grenze Gotisch', cursive;
+}
+
+#wanttobuy-image-bg{
+    background-image: url('/assets/img/thebag.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#wanttosell-image-bg{
+    background-image: url('/assets/img/store.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: row-reverse;
 }

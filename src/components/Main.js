@@ -8,6 +8,8 @@ import {fetchAllDescForBuyers, fetchAllDescForOwners} from '../redux/actions/Act
 import Header from './HeaderComp';
 import Footer from './FooterComp';
 import Home from './HomeComp';
+import IwantToBuy from './BuyComp';
+import IwantToSell from './SellComp';
 
 const mapStateToProps = state => ({
   descForBuyers: state.descForBuyers,
@@ -43,21 +45,15 @@ class Main extends React.Component {
 
   render(){
     
-    const WantToSell = (props) => {
+    const WantToSellPage = () => {
       return(
-        <div>
-          <h1>I Want to Sell</h1>
-          <p>lorem ipsu dolor bla bla</p>
-        </div>
+        <IwantToSell descForOwnersData={this.props.descForOwners}/>
       );
     }
 
-    const WantToBuy = (props) => {
+    const WantToBuyPage = () => {
       return(
-        <div>
-          <h1>I Want to Buy</h1>
-          <p>lorem ipsu dolor bla bla</p>
-        </div>
+        <IwantToBuy descForBuyersData={this.props.descForBuyers}/>
       );
     }
 
@@ -78,8 +74,8 @@ class Main extends React.Component {
         <NavbarSection/>
         <Switch>
           <Route path="/home" component={HomePage}/>
-          <Route path="/wanttosell" component={WantToSell}/>
-          <Route path="/wanttobuy" component={WantToBuy}/>
+          <Route path="/wanttosell" component={WantToSellPage}/>
+          <Route path="/wanttobuy" component={WantToBuyPage}/>
           <Redirect to="/home"/>
         </Switch>
         <Footer/>

@@ -4,15 +4,13 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import {Link} from 'react-router-dom';
-import {Loading} from './LoadingComp';
+import {Loading} from './reusable/LoadingComp';
 
 
 const RenderARow = (props) => {
     const nColumns = 3;
     const length = props.array.length;
     let index = props.index;
-    //const ActualnColumns = (index+3 > length)? length-index : nColumns; 
-    //const offset = (index+3 > length)? 1 : 0; 
     let rowToRender = [];
     for(let j = 0; j < nColumns; j++){
         if(index === length) break;
@@ -79,8 +77,12 @@ function Home(props){
                 </Row>
                 <div className="separator"></div><br/>
                 <div className="d-flex justify-content-around">
-                    <Button variant="success" className="rounded-buttons-lg mx-2">SELL MY PRODUCTS</Button>
-                    <Button variant="success" className="rounded-buttons-lg">BUY PRODUCTS</Button>
+                    <Link to="/wanttosell">
+                        <Button variant="success" className="rounded-buttons-lg mx-2">SELL MY PRODUCTS</Button>
+                    </Link>
+                    <Link to="/wanttobuy">
+                        <Button variant="success" className="rounded-buttons-lg">BUY PRODUCTS</Button>
+                    </Link>
                 </div>
                 <div className="d-flex justify-content-center mt-2">
                     <h4 className="bg-grey white-text">#IStayAtHome</h4>
@@ -106,7 +108,7 @@ function Home(props){
                 </div>
                 <br/><br/>
             </Container>
-            <Container fluid className="pesudo-footer">
+            <Container fluid className="pre-footer">
                 <Row>
                     <Col md={12} className="text-center">
                         <h3>IT DOESN'T MATTER IF YOU WANT TO BUY OR SELL</h3>
