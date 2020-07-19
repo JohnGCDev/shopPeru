@@ -1,11 +1,14 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import ImgPanel from './reusable/ImgPanelComp';
 import ServicesDescriptions from './reusable/ServicesDescriptionsComp';
 import PreFooter from './reusable/PreFooterComp';
 
 function IwantToSell(props){
-    return(
+    
+    const SimplerPage = () => {
+        return(
         <React.Fragment>
             <ImgPanel idCss={"wanttosell-image-bg"} title={"SELL AND MANAGE"} subtitle1="YOUR PRODUCTS FREELY." subtitle2="YOU ONLY NEED AN ACCOUNT"/>
             <Container>
@@ -16,7 +19,25 @@ function IwantToSell(props){
             </Container>
             <PreFooter/>
         </React.Fragment>
-       );
+        );
+    }
+
+    const LoggedPage = () => {
+        return(<React.Fragment>
+            <h1>HI SELLER!</h1>
+        </React.Fragment>);
+    }
+    
+    switch(props.userLogged){
+        case null:
+            return <SimplerPage/>;
+        case 'seller':
+            return <LoggedPage/>;
+        case 'buyer':
+            return <Redirect to='/wanttobuy'/>;
+        default:
+            return <Redirect to='/home'/>;
+    }
 }
 
 export default IwantToSell;

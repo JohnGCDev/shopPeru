@@ -6,6 +6,7 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {fetchAllDescForBuyers, fetchAllDescForOwners} from '../redux/actions/ActionCreators';
 import Header from './HeaderComp';
+import {LoginModal, SignupModal} from './ModalsComp';
 import Footer from './FooterComp';
 import Home from './HomeComp';
 import IwantToBuy from './BuyComp';
@@ -25,18 +26,45 @@ class Main extends React.Component {
 
   constructor(props){
     super(props);
-    this.state = {isLogged: false};
+    this.state = {
+      userLogged: null,
+      showLoginModal: false,
+      showSignupModal: false
+    };
+    //---Bind of Methods---
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleLoginModalClose = this.handleLoginModalClose.bind(this);
+    this.handleLoginModalShow = this.handleLoginModalShow.bind(this);
+    this.handleSignupModalClose = this.handleSignupModalClose.bind(this);
+    this.handleSignupModalShow = this.handleSignupModalShow.bind(this);
+    //---END:Bind of Methods---
   }
-
+  //---Handle Methods---
   handleLogout(){
-    this.setState({isLogged: false});
+    this.setState({userLogged: null});
   }
 
-  handleLogin(){
-    this.setState({isLogged: true});
+  handleLogin(userType){
+    this.setState({userLogged: userType});
   }
+  
+  handleLoginModalClose(){
+    this.setState({showLoginModal: false});
+  }
+
+  handleLoginModalShow(){
+    this.setState({showLoginModal: true});
+  }
+
+  handleSignupModalClose(){
+    this.setState({showSignupModal: false});
+  }
+
+  handleSignupModalShow(){
+    this.setState({showSignupModal: true});
+  }
+  //---END:Handle Methods---
 
   componentDidMount(){
     this.props.fetchAllDescForBuyers();
@@ -44,41 +72,66 @@ class Main extends React.Component {
   }
 
   render(){
+
+    const NavbarSection = () => {
+      return(
+        <Header userLogged={this.state.userLogged} handleLogout={this.handleLogout}
+          handleShowLoginModal={this.handleLoginModalShow} handleShowSignupModal={this.handleSignupModalShow}/>
+      )
+    }
+
+    const LoginModalSection = () => {
+      return(
+        <LoginModal show={this.state.showLoginModal} handleClose={this.handleLoginModalClose} 
+          handleShow={this.handleLoginModalShow} handleLogin={this.handleLogin}/>
+      );
+    }
+
+    const SignupModalSection = () => {
+      return(
+        <SignupModal show={this.state.showSignupModal} handleClose={this.handleSignupModalClose} 
+        handleShow={this.handleSignupModalShow} handleLogin={this.handleLogin}/>
+      );
+    }
+
+    const HomePage = () => {
+      return(
+        <Home descForBuyersData={this.props.descForBuyers} descForOwnersData={this.props.descForOwners}/>
+      );
+    }
     
     const WantToSellPage = () => {
       return(
-        <IwantToSell descForOwnersData={this.props.descForOwners}/>
+        <IwantToSell descForOwnersData={this.props.descForOwners} userLogged={this.state.userLogged}/>
       );
     }
 
     const WantToBuyPage = () => {
       return(
-        <IwantToBuy descForBuyersData={this.props.descForBuyers}/>
+        <IwantToBuy descForBuyersData={this.props.descForBuyers} userLogged={this.state.userLogged}/>
       );
     }
 
-    const NavbarSection = () => {
+    const FooterSection = () => {
       return(
-        <Header isLogged={this.state.isLogged} handleLogin={this.handleLogin} handleLogout={this.handleLogout}/>
-      )
-    }; 
-
-    const HomePage = () => {
-      return(
-        <Home descForBuyersData={this.props.descForBuyers} descForOwnersData={this.props.descForOwners}/>
-      )
+        <Footer userLogged={this.state.userLogged}/>
+      );
     }
+
+
   
     return (
       <React.Fragment>
         <NavbarSection/>
+        <LoginModalSection/>
+        <SignupModalSection/>
         <Switch>
           <Route path="/home" component={HomePage}/>
           <Route path="/wanttosell" component={WantToSellPage}/>
           <Route path="/wanttobuy" component={WantToBuyPage}/>
           <Redirect to="/home"/>
         </Switch>
-        <Footer/>
+        <FooterSection/>
       </React.Fragment>
     );
   }

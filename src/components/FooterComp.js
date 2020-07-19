@@ -13,8 +13,18 @@ const Footer = (props) => {
                         <h4>Links:</h4>
                         <ul className="list-unstyled">
                             <li><Link to="/home" className="links-white">Home</Link></li>
-                            <li><Link to="/wanttosell" className="links-white">I Want to Sell</Link></li>
-                            <li><Link to="/wanttobuy" className="links-white"> I Want to BUy</Link></li>
+                            {(props.userLogged === null) &&
+                                <React.Fragment>
+                                    <li><Link to="/wanttosell" className="links-white">I Want to Sell</Link></li>
+                                    <li><Link to="/wanttobuy" className="links-white"> I Want to Buy</Link></li>
+                                </React.Fragment>
+                            }
+                            {(props.userLogged === 'seller') &&
+                                <li><Link to="/wanttosell" className="links-white">I Want to Sell</Link></li>
+                            }
+                            {(props.userLogged === 'buyer') &&
+                                <li><Link to="/wanttobuy" className="links-white"> I Want to Buy</Link></li>
+                            }
                         </ul>
                     </Col>
                     <Col md={6}>
