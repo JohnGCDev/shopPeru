@@ -59,3 +59,34 @@ const errorDescForOwners = (errmess) => ({
   type: ActionTypes.DESCFOROWNERS_ERROR,
   payload: errmess
 });
+
+//------Actions: Profile for Buyers------
+export const fetchBuyerProfile = (buyerId) => (dispatch) => {
+  fetch(BASE_URL +'/users/buyers/'+ buyerId)
+    .then(response => {
+      if(response.ok){
+        return response;
+      }else{
+        throw new Error('Error '+response.status+': '+response.statusText);
+      }
+    }, error => {
+      throw error;
+    })
+    .then(response => response.json())
+    .then(data => {setTimeout(()=>{localStorage.setItem("userProfile", JSON.stringify(data)); dispatch(addBuyerProfile(data))}, 2200)})//Keep track user's profile
+    .catch(error => dispatch(errorBuyerProfile(error.message)));
+};
+
+export const addBuyerProfile = (profile) => ({
+  type: ActionTypes.BUYERPROFILE_ADD,
+  payload: profile
+});
+
+const errorBuyerProfile = (errmess) => ({
+  type: ActionTypes.BUYERPROFILE_ERROR,
+  payload: errmess
+});
+
+export const clearBuyerProfile = () => ({
+  type: ActionTypes.BUYERPROFILE_CLEAR
+});

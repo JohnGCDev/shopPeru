@@ -3,6 +3,7 @@ import {Redirect} from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import ImgPanel from './reusable/ImgPanelComp';
 import ServicesDescriptions from './reusable/ServicesDescriptionsComp';
+import ImgPanelLogged from './reusable/ImgPanelLoggedComp';
 import PreFooter from './reusable/PreFooterComp';
 
 function IwantToBuy(props){
@@ -24,7 +25,8 @@ function IwantToBuy(props){
     const LoggedPage = () => {
         return(
             <React.Fragment>
-                <h1>HI BUYER!</h1>
+                <ImgPanelLogged isLoading={props.buyerProfile.isLoading} errmess={props.buyerProfile.errmess}
+                    data={props.buyerProfile.profile}/>
             </React.Fragment>
         );
     }

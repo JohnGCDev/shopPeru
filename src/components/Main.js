@@ -4,7 +4,8 @@ import '../../node_modules/font-awesome/css/font-awesome.min.css';
 import '../../node_modules/bootstrap-social/bootstrap-social.css';
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {fetchAllDescForBuyers, fetchAllDescForOwners} from '../redux/actions/ActionCreators';
+import {fetchAllDescForBuyers, fetchAllDescForOwners,
+  fetchBuyerProfile, clearBuyerProfile, addBuyerProfile} from '../redux/actions/ActionCreators';
 import Header from './HeaderComp';
 import {LoginModal, SignupModal} from './ModalsComp';
 import Footer from './FooterComp';
@@ -14,12 +15,16 @@ import IwantToSell from './SellComp';
 
 const mapStateToProps = state => ({
   descForBuyers: state.descForBuyers,
-  descForOwners: state.descForOwners
+  descForOwners: state.descForOwners,
+  buyerProfile: state.buyerProfile
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchAllDescForBuyers: () => dispatch(fetchAllDescForBuyers()),
-  fetchAllDescForOwners: () => dispatch(fetchAllDescForOwners())
+  fetchAllDescForOwners: () => dispatch(fetchAllDescForOwners()),
+  fetchBuyerProfile: (buyerId) => dispatch(fetchBuyerProfile(buyerId)),
+  clearBuyerProfile: () => dispatch(clearBuyerProfile()),
+  addBuyerProfile: (profile) => dispatch(addBuyerProfile(profile))
 });
 
 class Main extends React.Component {
@@ -43,10 +48,23 @@ class Main extends React.Component {
   //---Handle Methods---
   handleLogout(){
     this.setState({userLogged: null});
+    //Clear user's session
+    localStorage.removeItem("userType");
+    localStorage.removeItem("userProfile");
+    //Clear user's data
+    if(this.state.userLogged === 'buyer'){
+      this.props.clearBuyerProfile();
+    }
   }
 
   handleLogin(userType){
+    localStorage.setItem("userType", userType); //Keep track the user's session
     this.setState({userLogged: userType});
+    //Load user's data
+    if(userType === 'buyer'){
+      let defaultBuyerId = 0;
+      this.props.fetchBuyerProfile(defaultBuyerId);
+    }
   }
   
   handleLoginModalClose(){
@@ -69,6 +87,14 @@ class Main extends React.Component {
   componentDidMount(){
     this.props.fetchAllDescForBuyers();
     this.props.fetchAllDescForOwners();
+    //In case of reloading, remember user's session, if it exists
+    if(localStorage.getItem("userType")){
+      this.setState({userLogged: localStorage.getItem("userType")});
+    }
+    //In case of reloading, remember user's profile, if it exists
+    if(localStorage.getItem("userProfile")){
+      this.props.addBuyerProfile(JSON.parse(localStorage.getItem("userProfile")));
+    }
   }
 
   render(){
@@ -108,7 +134,8 @@ class Main extends React.Component {
 
     const WantToBuyPage = () => {
       return(
-        <IwantToBuy descForBuyersData={this.props.descForBuyers} userLogged={this.state.userLogged}/>
+        <IwantToBuy descForBuyersData={this.props.descForBuyers} userLogged={this.state.userLogged}
+          buyerProfile={this.props.buyerProfile}/>
       );
     }
 
