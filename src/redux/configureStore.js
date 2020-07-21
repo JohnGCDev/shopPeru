@@ -2,6 +2,7 @@ import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {descForBuyers} from './reducers/descForBuyers';
 import {descForOwners} from './reducers/descForOwners';
 import {buyerProfile} from './reducers/buyerProfile';
+import {ownerProfile} from './reducers/ownerProfile';
 import thunk from 'redux-thunk';
 
 export const ConfigureStore = () => {
@@ -9,7 +10,8 @@ export const ConfigureStore = () => {
         combineReducers({
             descForOwners,
             descForBuyers,
-            buyerProfile
+            buyerProfile,
+            ownerProfile
         }),
         applyMiddleware(thunk)
     );

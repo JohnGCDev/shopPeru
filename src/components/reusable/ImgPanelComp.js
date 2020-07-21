@@ -22,10 +22,12 @@ function ImgPanel(props){
                     </div>
                     <div className="separator"></div>
                     <div className="d-flex justify-content-around">
-                        <Button variant="success" className="rounded-buttons-lg mx-1">
+                        <Button variant="success" className="rounded-buttons-lg mx-1"
+                        onClick={props.handleShowSignupModal}>
                             I WANT TO CREATE AN ACCOUNT
                         </Button>
-                        <Button variant="success" className="rounded-buttons-lg">
+                        <Button variant="success" className="rounded-buttons-lg"
+                        onClick={props.handleShowLoginModal}>
                             I ALREADY HAVE AN ACCOUNT
                         </Button>
                     </div>

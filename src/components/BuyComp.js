@@ -10,14 +10,15 @@ function IwantToBuy(props){
     const SimplerPage = () => {
         return(
             <React.Fragment>
-                <ImgPanel idCss={"wanttobuy-image-bg"} title={"BUY AND ORDER"} subtitle1="YOUR PRODUCTS FREELY." subtitle2="YOU ONLY NEED AN ACCOUNT"/>
+                <ImgPanel idCss={"wanttobuy-image-bg"} title={"BUY AND ORDER"} subtitle1="YOUR PRODUCTS FREELY." subtitle2="YOU ONLY NEED AN ACCOUNT" handleShowLoginModal={props.handleShowLoginModal} handleShowSignupModal={props.handleShowSignupModal}/>
                 <Container>
                     <h2 className="mt-5">ONCE YOUR ACCOUNT HAS BEEN CREATED, YOU WILL BE ABLE TO:</h2>
                     <hr className="title-line"/>
                     <ServicesDescriptions isLoading={props.descForBuyersData.isLoading} errmess={props.descForBuyersData.errmess} data={props.descForBuyersData.descForBuyers}/>
                     <br/>
                 </Container>
-                <PreFooter/>
+                <PreFooter handleShowLoginModal={props.handleShowLoginModal} 
+                handleShowSignupModal={props.handleShowSignupModal}/>
             </React.Fragment>
        );
     }
@@ -26,7 +27,7 @@ function IwantToBuy(props){
         return(
             <React.Fragment>
                 <ImgPanelLogged isLoading={props.buyerProfile.isLoading} errmess={props.buyerProfile.errmess}
-                    data={props.buyerProfile.profile}/>
+                    data={props.buyerProfile.profile} />
             </React.Fragment>
         );
     }

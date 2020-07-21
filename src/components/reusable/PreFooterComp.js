@@ -15,10 +15,12 @@ function PreFooter(props){
                     <hr className="title-line"/>
                     <h3>GET STARTED NOW!</h3>
                     <div className="d-flex justify-content-around">
-                        <Button variant="success" className="rounded-buttons-lg mx-2">
+                        <Button variant="success" className="rounded-buttons-lg mx-2"
+                        onClick={props.handleShowSignupModal}>
                             I WANT TO CREATE AN ACCOUNT
                         </Button>
-                        <Button variant="success" className="rounded-buttons-lg">
+                        <Button variant="success" className="rounded-buttons-lg"
+                        onClick={props.handleShowLoginModal}>
                             I ALREADY HAVE AN ACCOUNT
                         </Button>
                     </div>

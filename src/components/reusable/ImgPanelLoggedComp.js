@@ -8,7 +8,7 @@ import {Loading} from './LoadingComp';
 
 function ImgPanelLogged(props){
     if(props.isLoading){
-        return <Loading/>;
+        return <div style={{paddingTop: "20px", paddingBottom: "20px"}}><Loading/></div>;
     }
 
     if(props.errmess){
@@ -16,12 +16,24 @@ function ImgPanelLogged(props){
     }
 
     if(props.data){
+
+        const scoreStars = (score) => {
+            let stars = [];
+            for(let i=1; i<=5; i++){
+                stars.push(
+                    <span key={i} className={(i <= score)?"fa fa-star fa-2x mx-2":"fa fa-star-o fa-2x mx-2"} 
+                    style={{color: "#FDCD09"}}></span>
+                );
+            }
+            return stars;
+        };
+        
         return(
             <Container fluid key={props.data.id} style={{"paddingTop": "10px"}}>
                 <Row>
                     <Col md={5} style={{paddingLeft: "0", marginLeft: "0", paddingRight: "0", marginRight: "0"}}>
                         <Card>
-                            <Card.Img src={props.data.img} alt={props.data.name} height="350"/>
+                            <Card.Img src={props.data.img} alt={props.data.name} height="390"/>
                             <Card.ImgOverlay style={{padding: 0}} className="d-flex flex-row-reverse">
                                 <Card.Text className="align-self-end">
                                     <Button variant="success" className="rounded-buttons" onClick={()=>alert("Feature under maintenance")}>
@@ -36,11 +48,23 @@ function ImgPanelLogged(props){
                             <h4 className="bg-grey white-text">#IStayAtHome</h4>
                         </div>
                         <div className="p-5">
-                            <h1 className="green-title text-uppercase display-4">{props.data.name}</h1><br/>
-                            <h3 className="d-block d-md-inline">
-                                <strong>{props.data.purchasedProducts + ' PURCHASED PRODUCTS'}</strong>
+                            <h1 className="green-title text-uppercase display-4">{props.data.name}</h1>
+                            <h5 className="text-right font-italic ">
+                                {'Joined '+ props.data.joined}
+                            </h5>
+                            <h3 className="">
+                                <strong>{(props.data.customersNumber)? 
+                                    (props.data.customersNumber + ' CUSTOMERS')
+                                    :
+                                    (props.data.purchasedProducts + ' PURCHASED PRODUCTS')}</strong>
                             </h3>
-                            <h5 className="d-block d-md-inline font-italic ml-md-5">{'Joined '+ props.data.joined}</h5>
+                            {(props.data.productsSold) &&
+                                (<h3><strong>{props.data.productsSold + ' PRODUCTS SOLD'}</strong></h3>)}
+                            {(props.data.score) &&
+                                <React.Fragment>
+                                    <h3 className="d-block d-md-inline"><strong>{'SCORE: '}</strong></h3>
+                                    <div className="d-block d-md-inline">{scoreStars(props.data.score)}</div>
+                                </React.Fragment>}
                         </div>
                     </Col>
                 </Row>
