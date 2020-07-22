@@ -115,3 +115,28 @@
 .green-title{
     color: #43a82c;
 }
+
+.tabnav-items{
+    border: solid 1px gray;
+}
+
+.tabnav-links{
+    color: #007800;
+    border-radius: 0;
+}
+
+.tabnav-links:hover{
+    background-color: #43a82c;
+    color: whitesmoke;
+    border-radius: 0;
+}
+
+.tabnav-active{
+    background-color: #43a82c !important;
+    border-radius: 0 !important;
+}
+
+.vertical-line{
+    background-color: #007800;
+    border-radius: 12px;
+}

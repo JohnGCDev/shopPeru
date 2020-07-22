@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Redirect} from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
+import Tab from 'react-bootstrap/Tab';
+import Nav from 'react-bootstrap/Nav';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import ImgPanel from './reusable/ImgPanelComp';
 import ServicesDescriptions from './reusable/ServicesDescriptionsComp';
 import ImgPanelLogged from './reusable/ImgPanelLoggedComp';
+import ProfileTab from './reusable/ProfileTabComp';
 import PreFooter from './reusable/PreFooterComp';
 
 function IwantToSell(props){
@@ -24,11 +29,67 @@ function IwantToSell(props){
         );
     }
 
+    //"state" for controlled TabPanel
+    const [tabKey, setTabKey] = useState("home");
     const LoggedPage = () => {
         return(
             <React.Fragment>
                 <ImgPanelLogged isLoading={props.ownerProfile.isLoading} errmess={props.ownerProfile.errmess}
                     data={props.ownerProfile.profile}/>
+                <Container className="mt-4">
+                    <Tab.Container activeKey={tabKey} onSelect={(k) => setTabKey(k)}>
+                        <Row>
+                            <Col md={12}>
+                                <Nav variant="pills" className="flex-row">
+                                    <Nav.Item className="flex-fill tabnav-items">
+                                        <Nav.Link eventKey="home" className={(tabKey === 'home')?
+                                        "tabnav-links tabnav-active": "tabnav-links"}>
+                                            <strong>HOME</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="flex-fill tabnav-items">
+                                        <Nav.Link eventKey="products" className={(tabKey === 'products')?
+                                        "tabnav-links tabnav-active": "tabnav-links"}>
+                                            <strong>PRODUCTS</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="flex-fill tabnav-items">
+                                        <Nav.Link eventKey="statistics" className={(tabKey === 'statistics')?
+                                        "tabnav-links tabnav-active": "tabnav-links"}>
+                                            <strong>STATISTICS AND REPORTS</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="flex-fill tabnav-items">
+                                        <Nav.Link eventKey="opinions" className={(tabKey === 'opinions')?
+                                        "tabnav-links tabnav-active": "tabnav-links"}>
+                                            <strong>OPINIONS</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={12}>
+                                <Tab.Content>
+                                    <Tab.Pane eventKey="home">
+                                        <ProfileTab isLoading={props.ownerProfile.isLoading} 
+                                        errmess={props.ownerProfile.errmess} 
+                                        data={props.ownerProfile.profile}/>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="products">
+                                        <h1>MY PRODUCTS</h1>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="statistics">
+                                        <h1>MY STATISTICS AND REPORTS</h1>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="opinions">
+                                        <h1>OPINIONS</h1>
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </Col>
+                        </Row>
+                    </Tab.Container>
+                </Container>
             </React.Fragment>
         );
         

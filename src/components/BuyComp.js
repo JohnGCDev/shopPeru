@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Redirect} from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
+import Tab from 'react-bootstrap/Tab';
+import Nav from 'react-bootstrap/Nav';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import ImgPanel from './reusable/ImgPanelComp';
 import ServicesDescriptions from './reusable/ServicesDescriptionsComp';
 import ImgPanelLogged from './reusable/ImgPanelLoggedComp';
+import ProfileTab from './reusable/ProfileTabComp';
 import PreFooter from './reusable/PreFooterComp';
 
 function IwantToBuy(props){
@@ -22,12 +27,59 @@ function IwantToBuy(props){
             </React.Fragment>
        );
     }
-
+    
+    //"state" for controlled TabPanel
+    const [tabKey, setTabKey] = useState("home");
     const LoggedPage = () => {
         return(
             <React.Fragment>
                 <ImgPanelLogged isLoading={props.buyerProfile.isLoading} errmess={props.buyerProfile.errmess}
-                    data={props.buyerProfile.profile} />
+                    data={props.buyerProfile.profile}/>
+                <Container className="mt-4">
+                    <Tab.Container activeKey={tabKey} onSelect={(k) => setTabKey(k)}>
+                        <Row>
+                            <Col md={12}>
+                                <Nav variant="pills" className="flex-row">
+                                    <Nav.Item className="flex-fill tabnav-items">
+                                        <Nav.Link eventKey="home" className={(tabKey === 'home')?
+                                        "tabnav-links tabnav-active": "tabnav-links"}>
+                                            <strong>HOME</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="flex-fill tabnav-items">
+                                        <Nav.Link eventKey="search" className={(tabKey === 'search')?
+                                        "tabnav-links tabnav-active": "tabnav-links"}>
+                                            <strong>SEARCH PRODUCTS</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item className="flex-fill tabnav-items">
+                                        <Nav.Link eventKey="movements" className={(tabKey === 'movements')?
+                                        "tabnav-links tabnav-active": "tabnav-links"}>
+                                            <strong>MOVEMENTS HISTORY</strong>
+                                        </Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={12}>
+                                <Tab.Content>
+                                    <Tab.Pane eventKey="home">
+                                        <ProfileTab isLoading={props.buyerProfile.isLoading} 
+                                        errmess={props.buyerProfile.errmess} 
+                                        data={props.buyerProfile.profile}/>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="search">
+                                        <h1>SEARCH PRODUCTS</h1>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="movements">
+                                        <h1>MOVEMENTS HISTORY</h1>
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </Col>
+                        </Row>
+                    </Tab.Container>
+                </Container>
             </React.Fragment>
         );
     }
