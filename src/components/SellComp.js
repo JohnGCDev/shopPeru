@@ -74,9 +74,25 @@ function IwantToSell(props){
                                     <Tab.Pane eventKey="home">
                                         <ProfileTab isLoading={props.ownerProfile.isLoading} 
                                         errmess={props.ownerProfile.errmess} 
-                                        data={props.ownerProfile.profile}/>
+                                        data={props.ownerProfile.profile}
+                                        usfDataIsLoading={props.usefulData.isLoading}
+                                        usfDataErrmess={props.usefulData.errmess}
+                                        usfDataData={props.usefulData.data}
+                                        />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="products">
+                                        {(!props.products.isLoading && props.products.data)&&
+                                            props.products.data.map(item =>{
+                                                return(
+                                                    <div key={item.id}>
+                                                        <h5>Shop ID: <strong>{item.shopId}</strong></h5>
+                                                        <h5>Name: <strong>{item.name}</strong></h5>
+                                                        <img src={item.img} width="100" alt={item.name}/>
+                                                    <h6>Description: <strong>{item.description}</strong></h6>
+                                                    </div>
+                                                );
+                                            })
+                                        }
                                         <h1>MY PRODUCTS</h1>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="statistics">

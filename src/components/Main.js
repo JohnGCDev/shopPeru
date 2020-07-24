@@ -6,7 +6,8 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {fetchAllDescForBuyers, fetchAllDescForOwners,
   fetchBuyerProfile, clearBuyerProfile, addBuyerProfile, fetchOwnerProfile,
-  addOwnerProfile, clearOwnerProfile} from '../redux/actions/ActionCreators';
+  addOwnerProfile, clearOwnerProfile, addUsefulData, clearUsefulData,
+  fetchProducts, clearProducts} from '../redux/actions/ActionCreators';
 import Header from './HeaderComp';
 import {LoginModal, SignupModal} from './ModalsComp';
 import Footer from './FooterComp';
@@ -18,7 +19,9 @@ const mapStateToProps = state => ({
   descForBuyers: state.descForBuyers,
   descForOwners: state.descForOwners,
   buyerProfile: state.buyerProfile,
-  ownerProfile: state.ownerProfile
+  ownerProfile: state.ownerProfile,
+  usefulData: state.usefulData,
+  products: state.products
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -31,7 +34,13 @@ const mapDispatchToProps = dispatch => ({
   //Owners Profile
   fetchOwnerProfile: (ownerId) => dispatch(fetchOwnerProfile(ownerId)),
   clearOwnerProfile: () => dispatch(clearOwnerProfile()),
-  addOwnerProfile: (profile) => dispatch(addOwnerProfile(profile))
+  addOwnerProfile: (profile) => dispatch(addOwnerProfile(profile)),
+  //Useful Data
+  clearUsefulData: () => dispatch(clearUsefulData()),
+  addUsefulData: (data) => dispatch(addUsefulData(data)),
+  //Products
+  fetchProducts: () => dispatch(fetchProducts()),
+  clearProducts: () => dispatch(clearProducts())
 });
 
 class Main extends React.Component {
@@ -59,6 +68,8 @@ class Main extends React.Component {
       //Clear user's session from LocalStorage
       localStorage.removeItem("userType");
       localStorage.removeItem("userProfile");
+      //Clear useful data from LocalStorage
+      localStorage.removeItem("usefulData");
       //Clear user's data from redux store
       switch(this.state.userLogged){
         case 'buyer': 
@@ -68,6 +79,10 @@ class Main extends React.Component {
         default: 
           break;
       }
+      //Clear useful data from redux store
+      this.props.clearUsefulData();
+      //Clear products data from redux store
+      this.props.clearProducts();
     }
   }
 
@@ -79,10 +94,12 @@ class Main extends React.Component {
       case 'buyer':
         let defaultBuyerId = 0;
         this.props.fetchBuyerProfile(defaultBuyerId);
+        this.props.fetchProducts();
         break;
       case 'seller':
         let defaultOwnerId = 0;
         this.props.fetchOwnerProfile(defaultOwnerId);
+        this.props.fetchProducts();
         break;
       default: break; 
     }
@@ -111,6 +128,7 @@ class Main extends React.Component {
     //In case of reloading, remember user's session, if it exists
     if(localStorage.getItem("userType")){
       this.setState({userLogged: localStorage.getItem("userType")});
+      this.props.fetchProducts(); //Also, reload products data if an user has logged
     }
     //In case of reloading, remember user's profile, if it exists
     if(localStorage.getItem("userProfile")){ //Warning! Using this.state.userLogged instead triggers errors because of the previous this.setState statement is asynchronous.
@@ -123,6 +141,10 @@ class Main extends React.Component {
           break;
         default: break; 
       }
+    }
+    //In case of reloading, remember useful data, if it exists
+    if(localStorage.getItem("usefulData")){
+      this.props.addUsefulData(JSON.parse(localStorage.getItem("usefulData")));
     }
   }
 
@@ -159,7 +181,8 @@ class Main extends React.Component {
       return(
         <IwantToSell descForOwnersData={this.props.descForOwners} userLogged={this.state.userLogged}
           handleShowLoginModal={this.handleLoginModalShow} handleShowSignupModal={this.handleSignupModalShow}
-          ownerProfile={this.props.ownerProfile}/>
+          ownerProfile={this.props.ownerProfile} usefulData={this.props.usefulData} 
+          products={this.props.products}/>
       );
     }
 

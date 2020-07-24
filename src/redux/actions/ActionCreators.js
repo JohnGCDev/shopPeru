@@ -71,6 +71,45 @@ const errorDescForOwners = (errmess) => ({
   type: ActionTypes.DESCFOROWNERS_ERROR,
   payload: errmess
 });
+//------Actions: Useful Data------
+const fetchUsefulData = () => (dispatch) => {
+  dispatch(loadingUsefulData);
+
+  fetch(BASE_URL + '/useful')
+    .then(response => {
+      if(response.ok){
+        return response;
+      }else{
+        throw new Error('Error '+response.status+': '+response.statusText);
+      }
+    }, error => {
+      throw error;
+    })
+    .then(response => response.json())
+    .then(data => setTimeout(() =>{
+      localStorage.setItem('usefulData', JSON.stringify(data));
+      dispatch(addUsefulData(data));
+    },1500))
+    .catch(error => dispatch(errorUsefulData(error.message)));
+};
+
+const loadingUsefulData = () => ({
+  type: ActionTypes.USEFULDATA_LOADING
+});
+
+export const addUsefulData = (data) => ({
+  type: ActionTypes.USEFULDATA_ADD,
+  payload: data
+});
+
+const errorUsefulData = (errmess) => ({
+  type: ActionTypes.USEFULDATA_ERROR,
+  payload: errmess
+});
+
+export const clearUsefulData = () => ({
+  type: ActionTypes.USEFULDATA_CLEAR
+});
 
 //------Actions: Profile for Buyers------
 export const fetchBuyerProfile = (buyerId) => (dispatch) => {
@@ -89,7 +128,7 @@ export const fetchBuyerProfile = (buyerId) => (dispatch) => {
     .then(response => response.json())
     .then(data => {setTimeout(()=>{
       localStorage.setItem("userProfile", JSON.stringify(data)); //Keep track user's profile
-      dispatch(addBuyerProfile(data))
+      dispatch(addBuyerProfile(data));
     }, 2200)})
     .catch(error => dispatch(errorBuyerProfile(error.message)));
 };
@@ -115,6 +154,7 @@ export const clearBuyerProfile = () => ({
 //---Actions: Profile for Owners---
 export const fetchOwnerProfile = (ownerId) => (dispatch) => {
   dispatch(loadingOwnerProfile());
+  dispatch(fetchUsefulData()); //Fetch Useful Data from server
 
   fetch(BASE_URL +'/users/owners/'+ ownerId)
     .then(response => {
@@ -150,4 +190,42 @@ const errorOwnerProfile = (errmess) => ({
 
 export const clearOwnerProfile = () => ({
   type: ActionTypes.OWNERPROFILE_CLEAR
+});
+//---Actions: Products---
+export const fetchProducts = () => (dispatch) => {
+  dispatch(loadingProducts());
+
+  fetch(BASE_URL + '/products')
+    .then(response => {
+      if(response.ok){
+        return response;
+      }else{
+        throw new Error('Error '+response.status+': '+response.statusText);
+      }
+    }, error => {
+      throw error;
+    })
+    .then(response => response.json())
+    .then(data => {setTimeout(()=>{
+      dispatch(addProducts(data));
+    }, 2200)})
+    .catch(error => dispatch(errorProducts(error.message)));
+};
+
+const loadingProducts = () => ({
+  type: ActionTypes.PRODUCTS_LOADING
+});
+
+const addProducts = (data) => ({
+  type: ActionTypes.PRODUCTS_ADD,
+  payload: data
+});
+
+const errorProducts = (errmess) => ({
+  type: ActionTypes.PRODUCTS_ERROR,
+  payload: errmess
+});
+
+export const clearProducts = () => ({
+  type: ActionTypes.PRODUCTS_CLEAR
 });

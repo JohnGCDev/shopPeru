@@ -1,8 +1,10 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import {Loading} from './LoadingComp';
-//import GgMap from './GgMapComp';
+import EmbeddedMap from './EmbeddedMapComp';
 
 function ProfileTab(props){
     if(props.isLoading){
@@ -20,6 +22,72 @@ function ProfileTab(props){
                 );
             })
         };
+
+        const displayPaymentMethods = (idsArray, dataArray) => {
+            let method;
+            return idsArray.map(id => {
+                method = dataArray.filter(item => item.id === id)[0];
+                if(method){
+                    return(
+                        <div key={method.id} className="mr-md-4">
+                            <Card style={{background: 'none'}}>
+                                <Card.Header className="text-center">
+                                    <Card.Img variant="top" src={method.img} 
+                                    style={{width: "130px", height: "100px"}}/>
+                                </Card.Header>
+                                <Card.Body>
+                                    <Card.Title className="text-center">{method.name}</Card.Title>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    );
+                }
+                return <div key={id}><h5 className="text-danger">Resource Not Found</h5></div>
+            })
+        }
+
+        const paymentMethodsSection = (isLoading, errmess, data, paymentMethodsIds) => {
+            if(isLoading){
+                return <div style={{paddingTop: "20px", paddingBottom: "20px"}}><Loading/></div>;
+            }
+            if(errmess){
+                return <h3 className="text-danger">{errmess}</h3>;
+            } 
+            if(data){
+                return(
+                    <React.Fragment>
+                        <h2 className="mt-4">PAYMENT METHODS</h2>
+                        <hr className="title-line"/>
+                        <div className="d-flex p-3" style={{backgroundColor: "#E4E4E4"}}>
+                            <div className="vertical-line mr-3">&nbsp;</div>
+                            <div className="flex-fill">
+                                <div className="text-right">
+                                    <Button variant="success" className="rounded-buttons" 
+                                    onClick={()=>alert("Feature under maintenance")}>
+                                        <span className="fa fa-plus-circle" aria-hidden="true"></span> Add New Method
+                                    </Button>
+                                </div>
+                                {(paymentMethodsIds && paymentMethodsIds.length &&
+                                data.paymentMethods && data.paymentMethods.length)
+                                ?
+                                <div className="d-flex flex-column flex-md-row mt-4 mt-md-0">
+                                    {displayPaymentMethods(paymentMethodsIds, data.paymentMethods)}
+                                </div>
+                                :
+                                    <h5 className="text-danger">No available</h5>
+                                }
+                                <div className="text-right mt-4">
+                                    <Button variant="success" className="rounded-buttons" 
+                                    onClick={()=>alert("Feature under maintenance")}>
+                                        <span className="fa fa-pencil" aria-hidden="true"></span> Edit Data
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </React.Fragment>
+                );
+            }   
+        }
 
         return(
             <React.Fragment>
@@ -55,21 +123,28 @@ function ProfileTab(props){
                             </div>
                         </div>
                         <h4><strong>LOCATION</strong></h4>
-                        {(props.data.location.latitude && props.data.location.longitude)
+                        {(props.data.urlMap)
                         ?
-                        <iframe title="location map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.9110796354626!2d-77.03943868518738!3d-12.049638891465415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDAyJzU4LjciUyA3N8KwMDInMTQuMSJX!5e0!3m2!1ses-419!2spe!4v1595397835554!5m2!1ses-419!2spe" width="600" height="450"  style={{border:"solid 1px #43a82c", width:"100%"}} allowFullScreen="" aria-hidden="false" tabIndex="0"></iframe>
-                            
+                            <EmbeddedMap url={props.data.urlMap}/>
                         :
-                            <h5 className="text-danger">No avaliable</h5>
+                            <h5 className="text-danger">No available</h5>
                         }
-
+                        <div className="text-right mt-4">
+                            <Button variant="success" className="rounded-buttons" 
+                            onClick={()=>alert("Feature under maintenance")}>
+                                <span className="fa fa-pencil" aria-hidden="true"></span> Edit Data
+                            </Button>
+                        </div>
                     </div>
                 </div>
+                {paymentMethodsSection(props.usfDataIsLoading, props.usfDataErrmess, props.usfDataData,
+                    props.data.paymentMethodsIds)}
             </React.Fragment>
         );
     }
 
     return <div>??</div>;
+
 }
 
 export default ProfileTab;
