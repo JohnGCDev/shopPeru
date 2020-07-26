@@ -114,6 +114,7 @@ export const clearUsefulData = () => ({
 //------Actions: Profile for Buyers------
 export const fetchBuyerProfile = (buyerId) => (dispatch) => {
   dispatch(loadingBuyerProfile());
+  dispatch(fetchUsefulData()); //Fetch Useful Data from server
   
   fetch(BASE_URL +'/users/buyers/'+ buyerId)
     .then(response => {
@@ -228,4 +229,43 @@ const errorProducts = (errmess) => ({
 
 export const clearProducts = () => ({
   type: ActionTypes.PRODUCTS_CLEAR
+});
+
+//---Actions: All Owners Data---
+export const fetchAllOwners = () => (dispatch) => {
+  dispatch(loadingAllOwners());
+
+  fetch(BASE_URL +'/users/owners')
+    .then(response => {
+      if(response.ok){
+        return response;
+      }else{
+        throw new Error('Error '+response.status+': '+response.statusText);
+      }
+    }, error => {
+      throw error;
+    })
+    .then(response => response.json())
+    .then(data => {setTimeout(()=>{
+      dispatch(addAllOwners(data));
+    }, 2200)})
+    .catch(error => dispatch(errorAllOwners(error.message)));
+}
+ 
+const loadingAllOwners = () => ({
+  type: ActionTypes.ALLOWNERS_LOADING
+});
+
+const addAllOwners = (data) => ({
+  type: ActionTypes.ALLOWNERS_ADD,
+  payload: data
+});
+
+const errorAllOwners = (errmess) => ({
+  type: ActionTypes.ALLOWNERS_ERROR,
+  payload: errmess
+});
+
+export const clearAllOwners = () => ({
+  type: ActionTypes.ALLOWNERS_CLEAR
 });

@@ -5,6 +5,7 @@ import {buyerProfile} from './reducers/buyerProfile';
 import {ownerProfile} from './reducers/ownerProfile';
 import {usefulData} from './reducers/usefulData';
 import {products} from './reducers/products';
+import {allOwners} from './reducers/allOwners';
 import thunk from 'redux-thunk';
 
 export const ConfigureStore = () => {
@@ -15,7 +16,8 @@ export const ConfigureStore = () => {
             buyerProfile,
             ownerProfile,
             usefulData,
-            products
+            products,
+            allOwners
         }),
         applyMiddleware(thunk)
     );

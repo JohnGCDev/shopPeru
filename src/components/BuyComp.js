@@ -9,6 +9,7 @@ import ImgPanel from './reusable/ImgPanelComp';
 import ServicesDescriptions from './reusable/ServicesDescriptionsComp';
 import ImgPanelLogged from './reusable/ImgPanelLoggedComp';
 import ProfileTab from './reusable/ProfileTabComp';
+import SearchProductsTab from './SearchProductsTabComp';
 import PreFooter from './reusable/PreFooterComp';
 
 function IwantToBuy(props){
@@ -70,7 +71,9 @@ function IwantToBuy(props){
                                         data={props.buyerProfile.profile}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="search">
-                                        <h1>SEARCH PRODUCTS</h1>
+                                        <SearchProductsTab products={props.products} 
+                                        usefulData={props.usefulData} owners={props.owners}
+                                        buyerProfile={props.buyerProfile}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="movements">
                                         <h1>MOVEMENTS HISTORY</h1>

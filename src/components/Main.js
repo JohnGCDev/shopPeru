@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import {fetchAllDescForBuyers, fetchAllDescForOwners,
   fetchBuyerProfile, clearBuyerProfile, addBuyerProfile, fetchOwnerProfile,
   addOwnerProfile, clearOwnerProfile, addUsefulData, clearUsefulData,
-  fetchProducts, clearProducts} from '../redux/actions/ActionCreators';
+  fetchProducts, clearProducts, fetchAllOwners, clearAllOwners} from '../redux/actions/ActionCreators';
 import Header from './HeaderComp';
 import {LoginModal, SignupModal} from './ModalsComp';
 import Footer from './FooterComp';
@@ -21,7 +21,8 @@ const mapStateToProps = state => ({
   buyerProfile: state.buyerProfile,
   ownerProfile: state.ownerProfile,
   usefulData: state.usefulData,
-  products: state.products
+  products: state.products,
+  allOwners: state.allOwners
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -40,7 +41,10 @@ const mapDispatchToProps = dispatch => ({
   addUsefulData: (data) => dispatch(addUsefulData(data)),
   //Products
   fetchProducts: () => dispatch(fetchProducts()),
-  clearProducts: () => dispatch(clearProducts())
+  clearProducts: () => dispatch(clearProducts()),
+  //All Owners
+  fetchAllOwners: () => dispatch(fetchAllOwners()),
+  clearAllOwners: () => dispatch(clearAllOwners())
 });
 
 class Main extends React.Component {
@@ -73,7 +77,9 @@ class Main extends React.Component {
       //Clear user's data from redux store
       switch(this.state.userLogged){
         case 'buyer': 
-          this.props.clearBuyerProfile(); break;
+          this.props.clearBuyerProfile(); 
+          this.props.clearAllOwners(); //Clear all owners data from redux store
+          break;
         case 'seller':
           this.props.clearOwnerProfile(); break;
         default: 
@@ -95,6 +101,7 @@ class Main extends React.Component {
         let defaultBuyerId = 0;
         this.props.fetchBuyerProfile(defaultBuyerId);
         this.props.fetchProducts();
+        this.props.fetchAllOwners();
         break;
       case 'seller':
         let defaultOwnerId = 0;
@@ -135,6 +142,7 @@ class Main extends React.Component {
       switch(localStorage.getItem("userType")){
         case 'buyer':
           this.props.addBuyerProfile(JSON.parse(localStorage.getItem("userProfile")));
+          this.props.fetchAllOwners(); //Also, reload all owners data if an buyer has logged
           break;
         case 'seller':
           this.props.addOwnerProfile(JSON.parse(localStorage.getItem("userProfile")));
@@ -190,7 +198,8 @@ class Main extends React.Component {
       return(
         <IwantToBuy descForBuyersData={this.props.descForBuyers} userLogged={this.state.userLogged}
           handleShowLoginModal={this.handleLoginModalShow} handleShowSignupModal={this.handleSignupModalShow}
-          buyerProfile={this.props.buyerProfile}/>
+          buyerProfile={this.props.buyerProfile} usefulData={this.props.usefulData} 
+          products={this.props.products} owners={this.props.allOwners}/>
       );
     }
 
