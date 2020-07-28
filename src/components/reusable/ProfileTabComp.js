@@ -15,12 +15,22 @@ function ProfileTab(props){
         return <Row><Col md={12}><h3 className="text-danger text-center">{props.errmess}</h3></Col></Row>;
     }
     if(props.data){
-        const displayCategories = (categories) => {
-            return categories.map((category, index) => {
-                return(
-                <span key={index} className="mr-3 badge badge-primary p-2 text-uppercase">{category}</span>
-                );
-            })
+        const displayCategories = (categories, categoriesIds) => {
+            let categoriesArray = [];
+            categoriesIds.forEach(categoriesId => {
+                for(let category of categories){
+                    if(category.id === categoriesId){
+                        categoriesArray.push(
+                            <span key={categoriesId.toString()} 
+                            className="mr-3 badge badge-primary p-2 text-uppercase">
+                                {category.name}
+                            </span>
+                        );
+                        break;
+                    }
+                }
+            });
+            return categoriesArray;
         };
 
         const displayPaymentMethods = (idsArray, dataArray) => {
@@ -106,10 +116,13 @@ function ProfileTab(props){
                         }
                         <h4><strong>DESCRIPTION</strong></h4>
                         <h5>{props.data.description}</h5><br/>
-                        {(props.data.categories && props.data.categories.length) &&
+                        {(props.usfDataData && props.usfDataData.categories &&
+                             props.usfDataData.categories.length && props.data && props.data.categoriesIds && props.data.categoriesIds.length) &&
                         <React.Fragment>
                             <h4><strong>CATEGORIES</strong></h4>
-                            <h5>{displayCategories(props.data.categories)}</h5><br/>
+                            <h5>
+                                {displayCategories(props.usfDataData.categories, props.data.categoriesIds)}
+                            </h5><br/>
                         </React.Fragment>
                         }
                         <div className="d-flex flex-column flex-md-row">

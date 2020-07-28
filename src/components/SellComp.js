@@ -5,10 +5,12 @@ import Tab from 'react-bootstrap/Tab';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Alert from 'react-bootstrap/Alert';
 import ImgPanel from './reusable/ImgPanelComp';
 import ServicesDescriptions from './reusable/ServicesDescriptionsComp';
 import ImgPanelLogged from './reusable/ImgPanelLoggedComp';
 import ProfileTab from './reusable/ProfileTabComp';
+import SellerProductsTab from './SellerProductsTabComp';
 import PreFooter from './reusable/PreFooterComp';
 
 function IwantToSell(props){
@@ -81,25 +83,20 @@ function IwantToSell(props){
                                         />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="products">
-                                        {(!props.products.isLoading && props.products.data)&&
-                                            props.products.data.map(item =>{
-                                                return(
-                                                    <div key={item.id}>
-                                                        <h5>Shop ID: <strong>{item.shopId}</strong></h5>
-                                                        <h5>Name: <strong>{item.name}</strong></h5>
-                                                        <img src={item.img} width="100" alt={item.name}/>
-                                                    <h6>Description: <strong>{item.description}</strong></h6>
-                                                    </div>
-                                                );
-                                            })
-                                        }
-                                        <h1>MY PRODUCTS</h1>
+                                        <SellerProductsTab products={props.products} 
+                                        usefulData={props.usefulData}
+                                        ownerProfile={props.ownerProfile}
+                                        />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="statistics">
-                                        <h1>MY STATISTICS AND REPORTS</h1>
+                                        <Alert variant="warning" className="text-center">
+                                            <h4>FEATURE UNDER MAINTENANCE</h4>
+                                        </Alert>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="opinions">
-                                        <h1>OPINIONS</h1>
+                                        <Alert variant="warning" className="text-center">
+                                            <h4>FEATURE UNDER MAINTENANCE</h4>
+                                        </Alert>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>

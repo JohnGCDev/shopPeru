@@ -5,6 +5,7 @@ import Tab from 'react-bootstrap/Tab';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Alert from 'react-bootstrap/Alert';
 import ImgPanel from './reusable/ImgPanelComp';
 import ServicesDescriptions from './reusable/ServicesDescriptionsComp';
 import ImgPanelLogged from './reusable/ImgPanelLoggedComp';
@@ -76,7 +77,9 @@ function IwantToBuy(props){
                                         buyerProfile={props.buyerProfile}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="movements">
-                                        <h1>MOVEMENTS HISTORY</h1>
+                                        <Alert variant="warning" className="text-center">
+                                            <h4>FEATURE UNDER MAINTENANCE</h4>
+                                        </Alert>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>

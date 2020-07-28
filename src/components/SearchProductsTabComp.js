@@ -10,10 +10,11 @@ import Alert from 'react-bootstrap/Alert';
 import Badge from 'react-bootstrap/Badge';
 import {Loading} from './reusable/LoadingComp';
 import EmbeddedMap from './reusable/EmbeddedMapComp';
+import ProductsList from './reusable/ProductsListComp';
 
 
 function SearchProductsTab(props){
-    const [products, setProducts] = useState(null);
+    const [products, setProducts] = useState(props.products.data);
     const [filters, setFilters] = useState({});
 
     if(props.products.isLoading || props.usefulData.isLoading || props.owners.isLoading ||
@@ -159,23 +160,14 @@ function SearchProductsTab(props){
                     }
                 }
                 //---Filtering end---
-                alert(JSON.stringify(filteredProducts));
+                //alert(JSON.stringify(filteredProducts));
+                setProducts(filteredProducts);
             }else{
                 alert('An error occurred, please try in a few minutes.')
             }
         }
 
-        const listCategories = (isLoading, errmess, usfData) => {
-            if(isLoading){
-                return <option value="loading" disabled="disabled">
-                    <span className="text-warning">Loading...</span>
-                </option>;
-            }
-            if(errmess){
-                return <option value="error" disabled="disabled">
-                    <span className="text-danger">Error loading data</span>
-                </option>;
-            }
+        const listCategories = (usfData) => {
             if(usfData.categories && usfData.categories.length){
                 let categories = []; 
                 categories.push(<option key='all' value='all'>ALL</option>);
@@ -190,17 +182,7 @@ function SearchProductsTab(props){
             } 
         };
 
-        const listTags = (isLoading, errmess, usfData) => {
-            if(isLoading){
-                return <option value="loading" disabled="disabled">
-                    <span className="text-warning">Loading...</span>
-                </option>;
-            }
-            if(errmess){
-                return <option value="error" disabled="disabled">
-                    <span className="text-danger">Error loading data</span>
-                </option>;
-            }
+        const listTags = (usfData) => {
             if(usfData.tags && usfData.tags.length){
                 let tags = []; tags.push(<option key='all' value='all'>ALL</option>);
                 usfData.tags.forEach(tag => {
@@ -214,29 +196,13 @@ function SearchProductsTab(props){
             }
         };
 
-        const displayEmbeddedMap = (isLoading, errmess, profile) => {
-            if(isLoading){
-                return <div style={{paddingTop: "20px", paddingBottom: "20px"}}><Loading/></div>;
-            }
-            if(errmess){
-                return <Row><Col md={12}><h3 className="text-danger text-center">{errmess}</h3></Col></Row>;
-            }
+        const displayEmbeddedMap = (profile) => {
             if(profile){
                 return <EmbeddedMap url={profile.urlMap}/>;
             }
         };
 
-        const listCustomTags = (isLoading, errmess, owners) => {
-            if(isLoading){
-                return <option value="loading" disabled="disabled">
-                    <span className="text-warning">Loading...</span>
-                </option>;
-            }
-            if(errmess){
-                return <option value="error" disabled="disabled">
-                    <span className="text-danger">Error loading data</span>
-                </option>;
-            }
+        const listCustomTags = (owners) => {
             if(owners){
                 let tags = []; tags.push(<option key='all' value='all'>ALL</option>);
                 owners.forEach(owner => {
@@ -390,20 +356,16 @@ function SearchProductsTab(props){
                                 <Col xs={12} md={'3'}>
                                     <FormGroup>
                                         <FormLabel>CATEGORY:</FormLabel>
-                                        <Control.select model=".category" className="form-control" defaultValue="all"
-                                        disabled={(props.usefulData.isLoading || props.usefulData.errmess)?"true":"false"}>
-                                            {listCategories(props.usefulData.isLoading, props.usefulData.errmess,
-                                            props.usefulData.data)}
+                                        <Control.select model=".category" className="form-control" defaultValue="all">
+                                            {listCategories(props.usefulData.data)}
                                         </Control.select>
                                     </FormGroup>
                                 </Col>
                                 <Col xs={12} md={'3'}>
                                     <FormGroup>
                                         <FormLabel>TAG:</FormLabel>
-                                        <Control.select model=".tag" className="form-control" defaultValue="all"
-                                        disabled={(props.usefulData.isLoading || props.usefulData.errmess)?"true":"false"}>
-                                            {listTags(props.usefulData.isLoading, props.usefulData.errmess,
-                                            props.usefulData.data)}
+                                        <Control.select model=".tag" className="form-control" defaultValue="all">
+                                            {listTags(props.usefulData.data)}
                                         </Control.select>
                                     </FormGroup>
                                 </Col>
@@ -460,7 +422,7 @@ function SearchProductsTab(props){
                                     <FormText className="text-center">
                                         <h6 className="text-info">(Showing .. near shops)</h6>
                                     </FormText>
-                                    {displayEmbeddedMap(props.buyerProfile.isLoading, props.buyerProfile.errmess, props.buyerProfile.profile)}
+                                    {displayEmbeddedMap(props.buyerProfile.profile)}
                                     <FormText className="text-center">
                                         <h6 className="text-info">
                                             Selected: THE KINGDOM OF CLOTHES, CLOTHES AND MORE
@@ -474,8 +436,7 @@ function SearchProductsTab(props){
                                     <FormLabel>TAGS CREATED BY SELECTED SHOP(S):</FormLabel>
                                     <Control.select model=".customTags" className="form-control"
                                     defaultValue="all" multiple>
-                                        {listCustomTags(props.owners.isLoading, props.owners.errmess,
-                                        props.owners.data)}
+                                        {listCustomTags(props.owners.data)}
                                     </Control.select>
                                 </FormGroup>
                             </Row>
@@ -488,8 +449,10 @@ function SearchProductsTab(props){
                                 </Col>
                             </Row>
                         </LocalForm>
-                        <h4 className="mt-3"><strong>RESULTS:</strong></h4>
+                        <h4 className="mt-3"><strong>RESULTS: ({products.length})</strong></h4>
                         <div className="d-flex"><div>{listFilters(filters)}</div></div>
+                        <ProductsList products={products} owners={props.owners.data} 
+                        usefulData={props.usefulData.data}/>
                     </div>
                 </div>
             </React.Fragment>
